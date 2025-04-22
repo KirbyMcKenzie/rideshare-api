@@ -1,0 +1,232 @@
+openapi: 3.0.3
+info:
+  title: HopSkipDrive Rides API
+  version: 1.0.0
+  description: API for managing rides and drivers
+
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /api/rides:
+    post:
+      summary: Create a new ride
+      tags: [rides]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ride:
+                  type: object
+                  required:
+                    - start_address
+                    - destination_address
+                  properties:
+                    start_address:
+                      type: string
+                      description: Starting address for the ride
+                      example: "1000 Biscayne Blvd, Miami, FL 33132"
+                    destination_address:
+                      type: string
+                      description: Destination address for the ride
+                      example: "2701 S Miami Ave, Miami, FL 33133"
+      responses:
+        "201":
+          description: Ride created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: "e52f501e-5e13-450e-b2fb-e6a75e9a2213"
+                  start_address:
+                    type: string
+                    example: "1000 Biscayne Blvd, Miami, FL 33132"
+                  destination_address:
+                    type: string
+                    example: "2701 S Miami Ave, Miami, FL 33133"
+                  driver_id:
+                    type: string
+                    format: uuid
+                    example: "cb9049c7-22a6-4802-a0fb-0d1dc66ef3f9"
+                  score:
+                    type: number
+                    format: float
+                    example: 20.507952
+                  earnings:
+                    type: string
+                    example: "12.0"
+                  ride_distance:
+                    type: string
+                    example: "3.08"
+                  commute_distance:
+                    type: string
+                    example: "11.7"
+                  ride_duration_minutes:
+                    type: integer
+                    example: 8
+                  commute_duration_minutes:
+                    type: integer
+                    example: 26
+                  created_at:
+                    type: string
+                    format: date-time
+                    example: "2025-04-22T23:39:41.295Z"
+                  updated_at:
+                    type: string
+                    format: date-time
+                    example: "2025-04-22T23:39:41.295Z"
+        "400":
+          description: Missing required parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Missing required parameters"
+        "422":
+          description: Validation error or routing calculation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                      - "Start address can't be blank"
+                      - "Destination address can't be blank"
+                  error:
+                    type: string
+                    example: "Failed to calculate route"
+
+  /api/drivers/{id}/rides:
+    get:
+      summary: Get rides for a specific driver
+      tags: [drivers]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: "cb9049c7-22a6-4802-a0fb-0d1dc66ef3f9"
+          description: Driver ID
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            example: 1
+          description: Page number
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            example: 5
+          description: Number of items per page (maximum 50)
+      responses:
+        "200":
+          description: List of rides for the driver
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rides:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Ride"
+                    example:
+                      - id: "e52f501e-5e13-450e-b2fb-e6a75e9a2213"
+                        start_address: "1000 Biscayne Blvd, Miami, FL 33132"
+                        destination_address: "2701 S Miami Ave, Miami, FL 33133"
+                        driver_id: "cb9049c7-22a6-4802-a0fb-0d1dc66ef3f9"
+                        score: 20.507952
+                        earnings: "12.0"
+                        ride_distance: "3.08"
+                        commute_distance: "11.7"
+                        ride_duration_minutes: 8
+                        commute_duration_minutes: 26
+                        created_at: "2025-04-22T23:39:41.295Z"
+                        updated_at: "2025-04-22T23:39:41.295Z"
+                  meta:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        example: 10
+                      page:
+                        type: integer
+                        example: 1
+                      per_page:
+                        type: integer
+                        example: 5
+                      total_pages:
+                        type: integer
+                        example: 10
+                        description: Total number of pages
+        "404":
+          description: Driver not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Driver not found"
+
+components:
+  schemas:
+    Ride:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        start_address:
+          type: string
+        destination_address:
+          type: string
+        driver_id:
+          type: string
+          format: uuid
+        score:
+          type: number
+          format: float
+        earnings:
+          type: string
+        ride_distance:
+          type: string
+        commute_distance:
+          type: string
+        ride_duration_minutes:
+          type: integer
+        commute_duration_minutes:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
