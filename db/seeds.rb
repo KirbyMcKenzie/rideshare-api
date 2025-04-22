@@ -1,9 +1,10 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+Driver.destroy_all
+
+[
+  "1001 Ocean Drive, Miami Beach, FL 33139",
+  "1205 Mariposa Ave, Coral Gables, FL 33146",
+  "3400 Pan American Dr, Miami, FL 33133",
+  "8755 NW 36th St, Doral, FL 33178"
+].each do |address|
+  Driver.create!(home_address: address)
+end
