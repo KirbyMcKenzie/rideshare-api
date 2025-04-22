@@ -3,6 +3,8 @@ Rails.application.routes.draw do
     resources :drivers, only: [] do
       get "rides", on: :member
     end
+
+    resources :rides, only: [ :create ]
   end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
