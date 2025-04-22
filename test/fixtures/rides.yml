@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  start_address: MyString
+  destination_address: MyString
+
+two:
+  start_address: MyString
+  destination_address: MyString
