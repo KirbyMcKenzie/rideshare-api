@@ -128,6 +128,7 @@ paths:
           schema:
             type: integer
             minimum: 1
+            maximum: 50
             example: 1
           description: Page number
         - in: query
@@ -177,8 +178,7 @@ paths:
                         example: 5
                       total_pages:
                         type: integer
-                        example: 10
-                        description: Total number of pages
+                        example: 2
         "404":
           description: Driver not found
           content:
