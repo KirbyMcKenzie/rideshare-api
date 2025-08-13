@@ -1,4 +1,4 @@
-# HopSkipDrive Rides API
+# Rideshare API
 
 A Rails 8 API application for managing scheduled rides and drivers with geocoded address validation, earnings calculations, and OpenAPI 3.0 documentation.
 
@@ -40,8 +40,8 @@ Interfaces with OpenRouteService for:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/KirbyMcKenzie/hopskipdrive-rides-api.git
-   cd hopskipdrive-rides-api
+   git clone https://github.com/KirbyMcKenzie/rideshare-api.git
+   cd rideshare-api
    ```
 
 2. Install dependencies:
@@ -82,7 +82,7 @@ The API will be available at: http://localhost:3000
 
 This app includes OpenAPI 3.0 documentation. To view the interactive documentation:
 
-1. Copy the contents of [openapi.yaml](cci:7://file:///Users/kirbymckenzie/dev/hopskipdrive-rides-api/openapi.yaml:0:0-0:0)
+1. Copy the contents of [openapi.yaml](/openapi.yaml)
 2. Paste it into [https://editor.swagger.io/](https://editor.swagger.io/)
 
 ## 📡 API Endpoints
